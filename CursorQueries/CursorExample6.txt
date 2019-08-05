@@ -1,0 +1,59 @@
+SQL> select * from course366;
+
+  COURSENO       COST COURSE_NAME
+---------- ---------- ---------------
+     10001       4750 java
+     10002       6175 c++
+     10003       3800 C
+     10004       9500 vb
+     10005       8075 perl
+     10006       7410 php
+     10007       8550 corba
+     10008       5985 .net
+     10009      10640 pl\sql
+     10010       9310 C#
+
+10 rows selected.
+
+
+SQL> declare
+  2  cnt number:=0;
+  3  cursor varun is
+  4  select DISTINCT courseno from student366
+  5  group by courseno having count(sid)>2;
+  6  begin
+  7  for z in varun loop
+  8  update course366 set cost = cost*0.95
+  9  where courseno=z.courseno;
+ 10  end loop;
+ 11  commit;
+ 12  end;
+ 13  .
+SQL> /
+
+PL/SQL procedure successfully completed.
+
+Commit complete.
+
+
+
+
+
+
+SQL> select * from course366;
+
+  COURSENO       COST COURSE_NAME
+---------- ---------- ---------------
+     10001     4512.5 java
+     10002       6175 c++
+     10003       3800 C
+     10004       9500 vb
+     10005       8075 perl
+     10006       7410 php
+     10007       8550 corba
+     10008       5985 .net
+     10009      10640 pl\sql
+     10010       9310 C#
+
+10 rows selected.
+

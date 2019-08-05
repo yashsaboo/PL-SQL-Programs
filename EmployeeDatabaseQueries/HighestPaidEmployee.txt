@@ -1,0 +1,25 @@
+/*Write and implement PL/ SQL code to display employee number, name and highest paid employee.*/
+
+/*Code*/
+Table created
+create table Emp2(Emp_no int primary key, Company varchar(50), DOJ date, Designation varchar(50), Salary int, Dep_no int);
+insert into Emp2 values ('101','Persistent', TO_DATE('1997-04-24','YYYY-MM-DD'),'Manager', '448000', '1');
+insert into Emp2 values (102,'Persistent',TO_DATE('1998-04-24','YYYY-MM-DD'),'software_Engineer',68000,1);
+insert into Emp2 values (103,'Persistent',TO_DATE('1999-04-24','YYYY-MM-DD'),'developer',108000,1);
+insert into Emp2 values (104,'Persistent',TO_DATE('2000-04-24','YYYY-MM-DD'),'Lab_attender',148000,1);
+insert into Emp2 values (105,'Persistent',TO_DATE('2001-04-24','YYYY-MM-DD'),'Manager',248000,1);
+insert into Emp2 values (106,'Persistent',TO_DATE('2002-04-24','YYYY-MM-DD'),'CEO',348000,1);
+
+declare
+employee int;
+salary int;
+ begin
+SELECT Emp_no,Salary into employee,salary from Emp2 WHERE ROWNUM = 1 ORDER BY Salary DESC;
+dbms_output.put_line('employee number,highest salary='|| employee ||','|| salary);
+end;
+
+/*
+Output:
+		employee number,highest salary=101,44800
+		Statement processed.
+*/

@@ -1,0 +1,188 @@
+CONSIDER THE FOLLOWING DATABASE SCHEMA
+1.CUSTOMER(CUSTID,NAME,SEX,ADRESS,CITY)
+2.ACCOUNT(ACCID,TYPE,BALANCE)
+3.CUSTACC(CUSTID,ACCID)
+
+QUERY 1:-CREATE ABOVE TABLES WITH PROPER CONSTARINTS
+
+SQL> create table cust(custid number(5) PRIMARY KEY,name varchar2(15),sex varchar2(10),adress varchar2(10),city varchar2(10));
+
+Table created.
+
+SQL> create table acc(accid number(10) PRIMARY KEY,
+  2  type varchar2(15),balance varchar2(10));
+
+Table created.
+
+SQL> create table custacc(custid number(10),FOREIGN KEY(custid)refrences cust(custid),accid number(10),FOREIGN KEY(accid) refrences acc(accid));
+
+Table created.
+
+
+SQL> desc cust;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ CUSTID                                                                                                            NOT NULL NUMBER(5)
+ NAME							VARCHAR2(15)
+ SEX							VARCHAR2(10)
+ ADRESS							VARCHAR2(10)
+ CITY							VARCHAR2(10)
+
+
+	           
+
+SQL> desc acc;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ ACCID                                                                                                            NOT NULL NUMBER(10)
+
+ TYPE							VARCHAR2(15)
+ BALANCE						VARCHAR2(10)
+
+SQL> desc custacc;
+Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ CUSTID                                                                                                                     NUMBER(5)
+                                                                      ACCID                                                 NUMBER(5)
+
+
+
+SQL> select * from cust;
+
+   CUSTID   NAME           SEX            ADRESS          CITY  
+---------- --------------- ----------     ----------     --------- ----------
+     1      smith           male          chinchpokli    bandar      
+     2      baba            male          hilltown	 townhill   
+     3      ankur           male          pune		 pune
+     4      shipra          female        up             meerut
+     5      nisha           female        pune           pune   
+     
+5 rows selected.
+
+SQL> select * from acc;
+
+   ACCID   TYPE             BALANCE         
+---------- --------------- ----------    
+     1      savings          45000                
+     2      current          21345             
+     3      current          2000         
+     4      savings          12000        
+     5      savings          100 
+     6	    current	     9999	       
+     
+
+6 rows selected.
+  
+
+SQL> select * from custacc;
+
+   CUSTID   ACCID                    
+---------- ---------------     
+     1      1                
+     2      2             
+     3      3         
+     4      4        
+     5      5 
+     5 	    6	          
+     
+6 rows selected.
+
+
+
+
+
+
+Query 1:List All The Customers Who Live In Pune
+
+SQL>select name from cust where city='pune';
+
+
+NAME
+---------- 
+ankur
+nisha
+
+Query 2:List All Customers Who have a balance greater than 10,000
+
+SQL>select name from cust where custid in (select custid from custacc where accid in(select accid from acc where balance >10000));
+
+NAME
+---------- 
+smith
+baba
+shipra
+
+
+Query 3:List All Female Customers In Pune
+SQL>select name from cust where sex like 'female' and city like 'pune';
+
+NAME
+---------- 
+nisha
+
+
+
+Query 4:Change The Adress of a Customer whose name is 'Smith'
+
+SQL>update cust set adress ='USA' where name like 'smith'
+1 row updated
+
+SQL>select name,adress from cust where name like 'smith'
+
+ NAME       ADRESS                    
+---------- ---------------     
+smith 	   USA 
+
+
+Query 5:Find Out The Customer with the highest balance
+
+SQL>select name from cust where custid=(select custid from custac where accid=(select accid from acc where balance =(select max(balance) from acc)));
+
+
+NAME
+---------- 
+smith
+
+
+Query 6: Update the balance of all female customers by 0.5%
+
+SQL>update acc set balance =(balance +0.005*balance) where accid in (select accid from custacc where custid in (select custid from cust where sex like 'female'));
+
+SQL>select * from acc;
+  ACCID   TYPE             BALANCE         
+---------- --------------- ----------    
+     1      savings          45000                
+     2      current          21345             
+     3      current          2000         
+     4      savings          12060        
+     5      savings          101 
+     6	    current	     10049
+6 rows selected
+
+Query 7:Find the Names of customers who have more than one account
+	       
+SQL>select name from cust where custid in (select custid from custacc having count(accid) >1 group by custid);
+
+NAME
+---------- 
+nisha
+     
+
+
+
+     
+              
+          
+        
+    	    	     
+
+
+ 
+
+   
+
+
+
+
+
+

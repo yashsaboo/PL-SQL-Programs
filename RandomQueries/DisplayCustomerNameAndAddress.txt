@@ -1,0 +1,30 @@
+/*Write and implement PL/SL code to display customer name and address of a given customer from customer table. 
+If the customer ID is not present in the table, it should throw an exception (‘no such customer’).*/
+
+/*Code*/
+create table customer_details(customer_name char(20),address char(30),id int Primary Key);
+insert into customer_details values ('Shiv','1/45 Vineet Nagar', 2000);
+insert into customer_details values ('Rahul','17/759 Vikas Nagar', 1001);
+insert into customer_details values ('John','19/781 Indira Nagar', 1000);
+select * from customer_details;
+
+Declare 
+	name char(20);
+	add char(30);
+        idd number;
+
+Begin
+       name:=:cust_name;
+        
+
+	Select customer_name, address,id into  name, add,idd from customer_details where customer_name =name ;
+	DBMS_OUTPUT.PUT_LINE(name ||' ' || add ||' ' ||idd );
+Exception
+	When No_DATA_FOUND THEN
+	DBMS_OUTPUT.PUT_LINE(' No such customer  '||  name);
+End;
+
+/*
+Output:
+		John,19/781 Indira Nagar,1000
+*/

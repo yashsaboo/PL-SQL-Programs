@@ -1,0 +1,48 @@
+/*Write and implement PL/SQL procedure or function to check if given number is prime or not.*/
+
+/*Code*/
+CREATE OR REPLACE FUNCTION prime(num number)
+return number
+IS
+result number;
+a number:=0;
+BEGIN
+FOR i IN 1..num LOOP
+result:=mod(num,i);
+IF result=0 then
+a := a + 1;
+END IF;
+END LOOP;
+return a;
+end;
+
+SQL> DECLARE
+result number;
+BEGIN
+result:=prime(&num);
+IF result>2 then
+DBMS_OUTPUT.PUT_LINE('THE NUMBER IS NOT PRIME!');
+ELSE
+DBMS_OUTPUT.PUT_LINE('THE NUMBER IS A PRIME!');
+END IF;
+DBMS_OUTPUT.PUT_LINE('DONE!');
+END;
+
+/*
+Output:
+		SQL> /
+		Enter value for num: 5
+		old   4: result:=prime(&num);
+		new   4: result:=prime(5);
+		THE NUMBER IS A PRIME!
+		DONE!
+		PL/SQL procedure successfully completed.
+
+		SQL> /
+		Enter value for num: 6
+		old   4: result:=prime(&num);
+		new   4: result:=prime(6);
+		THE NUMBER IS NOT PRIME!
+		DONE!
+		PL/SQL procedure successfully completed.
+*/

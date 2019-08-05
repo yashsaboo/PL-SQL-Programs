@@ -1,0 +1,15 @@
+/*Write and implement PL/SQL code to determine day of week based on today's date.*/
+
+/*Code*/
+Declare
+day varchar2(20);
+Begin
+day:=to_char(sysdate,'day');
+Dbms_output.put_line('Today is :' || day);
+End;
+
+/*
+Output:
+		Today is :Friday
+		Statement processed.
+*/

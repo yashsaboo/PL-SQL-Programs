@@ -1,0 +1,21 @@
+/*Write and implement PL/SQL code to find the sum of the 1st 100 even numbers.*/
+
+/*Code*/
+declare
+even number:=0;
+i number;
+begin
+for i in 1..100
+loop
+if(i mod 2 = 0) then
+even:=even+i;
+end if;
+end loop;
+dbms_output.put_line('Sum of first 100 even number='||even);
+end;
+
+/*
+Output:
+		Sum of first 100 even number=2550
+		Statement processed.
+*/

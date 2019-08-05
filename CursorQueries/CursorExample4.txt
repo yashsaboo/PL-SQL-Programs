@@ -1,0 +1,32 @@
+SQL> declare
+  2  cursor employee is
+  3  select ename,job from emp
+  4  where sal>2000;
+  5  vname emp.ename%type;
+  6  desg emp.job%type;
+  7  begin
+  8  open employee;
+  9  loop
+ 10  fetch employee into vname,desg;
+ 11  exit when employee%notfound;
+ 12  dbms_output.put_line('name is '||vname);
+ 13  dbms_output.put_line('designation is '||desg);
+ 14  end loop;
+ 15  close employee;
+ 16  end;
+ 17  .
+SQL> /
+name is JONES
+designation is MANAGER
+name is BLAKE
+designation is MANAGER
+name is CLARK
+designation is MANAGER
+name is SCOTT
+designation is ANALYST
+name is KING
+designation is PRESIDENT
+name is FORD
+designation is ANALYST
+
+PL/SQL procedure successfully completed.

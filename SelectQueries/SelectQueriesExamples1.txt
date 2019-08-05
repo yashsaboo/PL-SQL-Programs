@@ -1,0 +1,182 @@
+CONSIDER THE FOLLOWING DATABASE SCHEMA
+1.SALESPEOPLE(SNUM,SNAME,CITY)
+2.CUSTOMER(CNUM,CNAME,CITY)
+3.ORDER(ORDERNUM,AMOUNT,ODATE,CNUM)
+
+
+SQL> create table sales366(snum number(5) PRIMARY KEY,
+  2  sname varchar2(15),city varchar2(15));
+
+Table created.
+
+
+SQL> create table cust366(cnum number(5) PRIMARY KEY,
+  2  cname varchar2(15),city varchar2(15));
+
+Table created.
+
+
+SQL> create table ord366(onum number(5) PRIMARY KEY,
+  2  amt number(5),odate date,cnum number(5),snum number(5),
+  3  FOREIGN KEY(cnum) REFERENCES cust366(cnum),
+  4  FOREIGN KEY(snum) REFERENCES sales366(snum));
+
+Table created.
+
+
+SQL> desc sales366;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNUM                                      NOT NULL NUMBER(5)
+ SNAME                                              VARCHAR2(15)
+ CITY                                               VARCHAR2(15)
+
+
+SQL> desc cust366;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CNUM                                      NOT NULL NUMBER(5)
+ CNAME                                              VARCHAR2(15)
+ CITY                                               VARCHAR2(15)
+
+
+SQL> desc ord366;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ONUM                                      NOT NULL NUMBER(5)
+ AMT                                                NUMBER(5)
+ ODATE                                              DATE
+ CNUM                                               NUMBER(5)
+ SNUM                                               NUMBER(5)
+
+
+SQL> select * from sales366;
+
+      SNUM SNAME           CITY
+---------- --------------- ---------------
+     10001 smith           pune
+     10002 allen           mumbai
+     10003 jones           mumbai
+     10004 james           delhi
+     10005 chris           kolkata
+     10006 anthony         delhi
+     10007 clark           chennai
+     10008 jhonny          mumbai
+
+8 rows selected.
+
+
+SQL> select * from cust366;
+
+      CNUM CNAME           CITY
+---------- --------------- ---------------
+     20001 varun           pune
+     20002 faiz            chennai
+     20003 avinash         kolkata
+     20004 kuldip          delhi
+     20005 saurabh         pune
+     20006 somnath         kolkata
+     20007 kartik          delhi
+     20008 shashank        chennai
+     20009 gokul           mumbai
+     20010 darshal         mumbai
+     20011 smith           pune
+
+11 rows selected.
+
+
+SQL> select * from ord366;
+
+      ONUM        AMT ODATE           CNUM       SNUM
+---------- ---------- --------- ---------- ----------
+     30001       2645 12-MAR-08      20005      10007
+     30002       6485 27-APR-08      20001      10003
+     30003       9856 30-JUN-08      20005      10007
+     30004       6489 03-OCT-08      20011      10005
+     30007       9824 04-OCT-08      20009      10004
+     30010       5236 12-FEB-08      20001      10001
+     30015       4210 21-JAN-08      20008      10002
+
+7 rows selected.
+
+QUERY NO.1
+WRITE A QUERY THAT LISTS EACH ORDER FOLLOWED BY NAME AND THE CUSTOMER
+WHO MADE THAT ORDER.
+
+
+SQL>  select ord366.onum,ord366.amt,ord366.odate,
+  2  cust366.cname from ord366,cust366
+  3  WHERE ord366.cnum = cust366.cnum;
+
+      ONUM        AMT ODATE     CNAME
+---------- ---------- --------- ---------------
+     30001       2645 12-MAR-08 saurabh
+     30002       6485 27-APR-08 varun
+     30003       9856 30-JUN-08 saurabh
+     30004       6489 03-OCT-08 smith
+     30007       9824 04-OCT-08 gokul
+     30010       5236 12-FEB-08 varun
+     30015       4210 21-JAN-08 shashank
+
+7 rows selected.
+
+QUERY NO.2
+WRITE ALL THOSE ORDERS TAKEN ON THE 3RD AND 4TH OF OCTOBER.
+
+
+SQL> select * from ord366
+  2  where odate IN ('03-oct-08','04-oct-08');
+
+      ONUM        AMT ODATE           CNUM       SNUM
+---------- ---------- --------- ---------- ----------
+     30004       6489 03-OCT-08      20011      10005
+     30007       9824 04-OCT-08      20009      10004
+
+
+QUERY NO.3
+FIND ALL SALES PEOPLE LOCATED IN EITHER PUNE OR MUMBAI.
+
+
+SQL> select * from sales366
+  2  WHERE city IN ('pune','mumbai');
+
+      SNUM SNAME           CITY
+---------- --------------- ---------------
+     10001 smith           pune
+     10002 allen           mumbai
+     10003 jones           mumbai
+     10008 jhonny          mumbai
+
+
+QUERY NO.4
+SELECT ALL CUSTOMERS WHOSE NAMES FALL IN BETWEEN 'A' AND 'G'
+ALPHABETICALLY.
+
+
+SQL>  select * from cust366
+  2   WHERE cname BETWEEN 'a%' AND 'g%'
+  3   ORDER BY cname;
+
+      CNUM CNAME           CITY
+---------- --------------- ---------------
+     20003 avinash         kolkata
+     20010 darshal         mumbai
+     20002 faiz            chennai
+
+
+QUERY NO.5
+FIND ALL ORDERS WITH AMOUNTS SMALLER THAN ANY AMOUNT FOR CUSTOMER 
+'SMITH'.
+
+
+SQL>  select onum,amt from ord366
+  2   WHERE amt<(select amt from ord366
+  3   WHERE cnum = (select cnum from cust366
+  4   WHERE cname = 'smith'));
+
+      ONUM        AMT
+---------- ----------
+     30001       2645
+     30002       6485
+     30010       5236
+     30015       4210

@@ -1,0 +1,32 @@
+/*Write a PL/SQL code to check if a number is prime or not.*/
+
+/*Code*/
+declare
+n number;
+flag number;
+i number;
+begin
+i:=2;
+flag:=1;
+n:=:num;
+for i in 2..n/2
+loop
+if(n mod i = 0)
+then
+flag:=0;
+exit;
+end if;
+end loop;
+if(flag=1)
+then
+dbms_output.put_line('prime');
+else
+dbms_output.put_line('not prime');
+end if;
+end;
+
+/*
+Output:
+		Num:7
+		Prime6
+*/

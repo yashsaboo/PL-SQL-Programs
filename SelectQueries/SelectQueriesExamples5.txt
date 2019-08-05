@@ -1,0 +1,117 @@
+CONSIDER THE FOLLOWING DATABASE SCHEMA
+1.EMPLOYEE (EMPID,ENAME)
+2.ORDER(PROID,PNAME,EMPID,ORDDATE)
+
+
+SQL> create table employee(empid number(5) PRIMARY KEY,
+  2  ename varchar2(15));
+
+Table created.
+
+SQL> create table order(proid number(5),pname varchar2(10),empid number (10),foreign key (empid) refrences employee (empid),orddate date); 
+    
+Table created.
+
+
+
+SQL> desc dept1366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ EMPID                                                                                                            NOT NULL  NUMBER(5)
+ ENAME                                                                                                                      VARCHAR2(15)
+
+
+
+SQL> desc order;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ PROID                                                                                                                      NUMBER(5)
+
+ PNAME                                                                                                                      VARCHAR2(10)
+ EMPID                                                                                                                      NUMBER(10)
+ ORDDATE                                                                                                                    DATE
+
+
+SQL> select * from employee;
+
+    EMPID  ENAME
+---------- ---------------
+     1     jk
+     2     df
+     3     se
+     4     er
+     
+4 rows selected.
+
+
+SQL> select * from order;
+
+     PROID       PNAME ODATE         EMPID       
+---------- ---------- --------- ---------- 
+     50       printer 23-JUN-09      10      
+     60       printer 03-JUN-09      20      
+     70       scanner 04-JUL-09      30      
+     80       plotter 04-JUL-09      40      
+     51       scanner 10-JAN-09      10     
+     52       plotter 25-JAN-09      10      
+          
+
+6 rows selected.
+
+
+
+Query 1: display the names of employees and product name order by empid
+
+
+SQL> select ename,pname from employee,order where employee.empid=order.empid;
+
+
+
+    ENAME  PNAME
+---------- ---------------
+     jk		printer		
+              
+     df         printer		
+     se         scanner   
+     er		plotter			
+     jk		scanner	
+     jk         plotter
+ 
+6 rows selected.
+
+Query 2:Display Name of Employee who has ordered printer
+
+SQL>select * from employee where empid in (select empid from order where pname='printer')
+
+
+ 
+EMPID  ENAME
+---------- ---------------
+     1     jk
+     2     df
+ 
+2 rows selected.   
+
+
+Query 3:Display Name of Employee who has ordered scanner in the current month
+SQL>select ename from employee where empid=(select empid from order where substr(sysdate,4,3) and pname='scanner');
+
+ENAME
+-------
+se
+
+
+
+Query 4:Display Name of emp who has ordered plotter during the month of jan
+SQL>select ename from employee where empid=(select empid from order where substr(sysdate,4,3)='JAN' and pname='scanner');
+
+ENAME
+-------
+jk
+
+
+SQL>select ename from employee where empid in(select empid from order where pname='scanner' and empid in(select empid from order where pname='plotter') and empid in(select empid from order where pname='printer'));
+
+ENAME
+-------
+jk

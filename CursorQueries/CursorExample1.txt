@@ -1,0 +1,30 @@
+SQL> declare
+  2  cursor employee2 is
+  3  select ename from emp
+  4  where (months_between(sysdate,hiredate)/12)>25;
+  5  vname emp.ename%type;
+  6  begin
+  7  open employee2;
+  8  loop
+  9  fetch employee2 into vname;
+ 10  exit when employee2%notfound;
+ 11  dbms_output.put_line('name is '||vname);
+ 12  end loop;
+ 13  close employee2;
+ 14  end;
+ 15  .
+SQL> /
+name is SMITH
+name is ALLEN
+name is WARD
+name is JONES
+name is MARTIN
+name is BLAKE
+name is CLARK
+name is KING
+name is TURNER
+name is JAMES
+name is FORD
+name is MILLER
+
+PL/SQL procedure successfully completed.

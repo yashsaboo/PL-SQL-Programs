@@ -1,0 +1,20 @@
+/*Write and Implement PL/SQL code to print the given number is even or odd.*/
+
+/*Code*/
+DECLARE
+firstNumber number :=156;
+result VARCHAR(10);
+BEGIN
+if mod(firstNumber,2) = 0 then
+result := 'Even';
+else
+result := 'Odd';
+END if;
+DBMS_OUTPUT.PUT_LINE('Result : ' || result);
+END;
+
+/*
+Output:
+		Result : Even
+		Statement processed.
+*/

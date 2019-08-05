@@ -1,0 +1,23 @@
+/*Write and Implement PL/SQL code to print number 10 to 5 using while loop.*/
+
+/*Code*/
+DECLARE
+counter number;
+BEGIN
+counter := 10;
+While counter >= 5 loop
+DBMS_OUTPUT.PUT_LINE('counter = '|| counter);
+counter := counter-1;
+END Loop;
+END;
+
+/*
+Output:
+		counter = 10
+		counter = 9
+		counter = 8
+		counter = 7
+		counter = 6
+		counter = 5
+		Statement processed.
+*/

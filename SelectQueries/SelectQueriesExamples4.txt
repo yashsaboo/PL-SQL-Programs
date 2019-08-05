@@ -1,0 +1,188 @@
+CONSIDER THE FOLLOWING DATABASE SCHEMA
+1.EMPLOYEE(EMPNO,ENAME,ECITY,JOB,SALARY,DEPTID,PROJECTID)
+2.PROJECT(PROJECT ID,PNAME,PAREA)
+3.DEPT(DEPTID,DNAME)
+
+
+QUERY 1:- CREATE ABOVE TABLES WITH PROPER CONSTARINTS
+
+SQL> create table proj1366(projectid number(5) PRIMARY KEY,
+  2  pname varchar2(15),parea varchar2(10));
+
+Table created.
+
+
+SQL> create table dept1366(deptid number(5) PRIMARY KEY,
+  2  dname varchar2(15));
+
+Table created.
+
+
+SQL> create table emp1366(empno number(5) PRIMARY KEY,
+  2  ename varchar2(15),job varchar2(10),
+  3  salary number(7),deptid number(5),
+  4  projectid number(5),
+  5  FOREIGN KEY(deptid) REFERENCES dept1366(deptid),
+  6  FOREIGN KEY(projectid) REFERENCES proj1366(projectid));
+
+Table created.
+
+
+SQL> desc dept1366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ DEPTID                                                                                                            NOT NULL NUMBER(5)
+ DNAME                                                                                                                      VARCHAR2(15)
+
+
+
+SQL> desc proj1366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ PROJECTID                                                                                                         NOT NULL NUMBER(5)
+ PNAME                                                                                                                      VARCHAR2(15)
+ PAREA                                                                                                                      VARCHAR2(10)
+
+
+SQL> desc emp1366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ EMPNO                                                                                                             NOT NULL NUMBER(5)
+ ENAME                                                                                                                      VARCHAR2(15)
+ JOB                                                                                                                        VARCHAR2(10)
+ SALARY                                                                                                                     NUMBER(7)
+ DEPTID                                                                                                                     NUMBER(5)
+ PROJECTID                                                                                                                  NUMBER(5)
+
+
+SQL> select * from dept1366;
+
+    DEPTID DNAME
+---------- ---------------
+     20001 Civil
+     20002 aeronautical
+     20003 mechanical
+     20004 computer
+     20005 IT
+     20006 EnTC
+     20007 electrical
+     20008 chemical
+
+8 rows selected.
+
+SQL> select * from proj1366;
+
+ PROJECTID PNAME           PAREA
+---------- --------------- ----------
+     30001 workshop        abc
+     30002 DSP             xyz
+     30003 networking      lmn
+     30004 smithy          def
+     30005 OS              pqr
+     30006 organic chem    ghi
+     30007 costruction     tuv
+
+7 rows selected.
+
+SQL> select * from emp1366;
+
+     EMPNO ENAME           JOB            SALARY     DEPTID  PROJECTID
+---------- --------------- ---------- ---------- ---------- ----------
+     10001 varun           manager         50000      20003      30003
+     10002 kartik          clerk            4000      20003      30002
+     10003 avinash         manager         50000      20001      30004
+     10004 somnath         clerk            4000      20001      30005
+     10005 kuldip          vp              80000      20002      30007
+     10006 summet          md             100000      20005      30001
+     10007 niketan         sales            3000      20007      30003
+     10008 ram             manager         50000      20008      30005
+
+8 rows selected.
+
+
+QUERY 2:- GIVE DEPT WISE SALARY LISTING.
+
+
+SQL>  select emp1366.salary,dept1366.dname from
+  2  emp1366,dept1366 where emp1366.deptid = dept1366.deptid;
+
+    SALARY DNAME
+---------- ---------------
+     50000 mechanical
+      4000 mechanical
+     50000 Civil
+      4000 Civil
+     80000 aeronautical
+    100000 IT
+      3000 electrical
+     50000 chemical
+
+8 rows selected.
+
+
+QUERY 3:-GIVE DETAILS OF EMPLOYEES WHO ARE EARNING MORE THAN
+AVERAGE SALARY OF PARTICULAR DEPT.
+
+
+SQL> select * from emp1366
+  2  where salary>(select avg(salary)
+  3  from emp1366 where deptid = 
+  4  (select deptid from dept1366 where
+  5  dname = 'mechanical'));
+
+     EMPNO ENAME           JOB            SALARY     DEPTID  PROJECTID
+---------- --------------- ---------- ---------- ---------- ----------
+     10001 varun           manager         50000      20003      30003
+     10003 avinash         manager         50000      20001      30004
+     10005 kuldip          vp              80000      20002      30007
+     10006 summet          md             100000      20005      30001
+     10008 ram             manager         50000      20008      30005
+
+
+QUERY 4:- GIVE THE EMPLOYEE DETAILS WORKING ON ATLEAST THOSE
+PROJECTS THAT EMPLOYEE 'RAM' WORKS FOR.
+
+SQL> select * from emp1366
+  2  where projectid IN
+  3  (select projectid from emp1366
+  4  where ename = 'ram');
+
+     EMPNO ENAME           JOB            SALARY     DEPTID  PROJECTID
+---------- --------------- ---------- ---------- ---------- ----------
+     10004 somnath         clerk            4000      20001      30005
+     10008 ram             manager         50000      20008      30005
+
+
+QUERY 5:-GIVE DEPT DETAILS FOR EMPLOYEE 'RAM',
+
+SQL> select * from dept1366
+  2  where deptid = 
+  3  (select deptid from emp1366
+  4  where ename = 'ram');
+
+    DEPTID DNAME
+---------- ---------------
+     20008 chemical
+
+
+
+QUERY 6:-CREATE DUPLICATE TABLE WITH ALL THE VALUES THAT PROJECT CONTAINS.
+
+SQL> create table proj2366 as ( select * from proj1366);
+
+Table created.
+
+
+SQL> select * from proj2366;
+
+ PROJECTID PNAME           PAREA
+---------- --------------- ----------
+     30001 workshop        abc
+     30002 DSP             xyz
+     30003 networking      lmn
+     30004 smithy          def
+     30005 OS              pqr
+     30006 organic chem    ghi
+     30007 costruction     tuv
+
+7 rows selected.

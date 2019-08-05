@@ -1,0 +1,20 @@
+SQL> declare
+  2  cursor student is
+  3  select fname from student11;
+  4  vname student11.fname%type;
+  5  begin
+  6  open student;
+  7  loop
+  8  fetch student into vname;
+  9  exit when student%notfound;
+ 10  dbms_output.put_line('name is '||vname);
+ 11  end loop;
+ 12  close student;
+ 13  end;
+ 14  .
+SQL> /
+name is saharsh
+name is varun
+name is kartik
+
+PL/SQL procedure successfully completed.

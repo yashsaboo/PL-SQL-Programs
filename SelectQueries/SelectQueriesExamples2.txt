@@ -1,0 +1,162 @@
+CONSIDER THE FOLLOWING DATABASE SCHEMA
+1.EMPLOYEE(EMPNO,ENAME,ECITY,JOB)
+2.PROJECT(PROJECT ID,PNAME,PAREA)
+3.ASSIGNEDTO(EMPNO,PROJECTID)
+
+QUERY 1:- CREATE ABOVE TABLES WITH PROPER CONSTRAINTS.
+
+SQL> create table emp366(empno number(5) PRIMARY KEY,ename varchar2(15),ecity varchar(6),
+  2  job varchar2(10));
+
+Table created.
+
+
+SQL> create table project366(projectid number(5) PRIMARY KEY,pname varchar2(10),
+  2  parea varchar2(6));
+
+Table created.
+
+
+SQL> create table assign366(empno number(5),projectid number(5),
+  2  FOREIGN KEY (empno) references emp366(empno),
+  3  FOREIGN KEY(projectid) references project366(projectid));
+
+Table created.
+
+
+SQL> desc emp366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ EMPNO                                                                                                             NOT NULL NUMBER(5)
+ ENAME                                                                                                                      VARCHAR2(15)
+ ECITY                                                                                                                      VARCHAR2(6)
+ JOB                                                                                                                        VARCHAR2(10)
+
+
+SQL> desc project366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ PROJECTID                                                                                                         NOT NULL NUMBER(5)
+ PNAME                                                                                                                      VARCHAR2(10)
+ PAREA                                                                                                                      VARCHAR2(6)
+
+
+SQL> desc assign366;
+ Name                                                                                                              Null?    Type
+ ---------------------------------------------------------------------------------------------------
+ EMPNO                                                                                                                      NUMBER(5)
+ PROJECTID                                                                                                                  NUMBER(5)
+
+
+SQL> select * from emp366;
+
+     EMPNO ENAME           ECITY  JOB
+---------- --------------- ------ ----------
+     10001 varun           pune   manager
+     10002 kartik          delhi  clerk
+     10003 shashank        blore  manager
+     10004 saurabh         dhule  md
+     10005 faiz            mumbai manager
+     10006 avinash         vizag  vp
+     10007 kuldip          delhi  manager
+     10008 somnath         pune   manager
+
+8 rows selected.
+
+
+SQL> select * from project366;
+
+ PROJECTID PNAME      PAREA
+---------- ---------- ------
+       100 oracle     abc
+       200 c lang     def
+       300 dsp        ghi
+       400 vb         jkl
+       500 dc         mno
+       600 dbms       pqr
+       700 micro      stu
+
+7 rows selected.
+
+
+SQL> select * from assign366;
+
+     EMPNO  PROJECTID
+---------- ----------
+     10001        100
+     10001        300
+     10002        200
+     10002        300
+     10003        100
+     10003        200
+     10004        400
+     10005        200
+     10005        300
+     10007        700
+     10006        300
+
+11 rows selected.
+
+
+QUERY 2:- GIVE EMPLOYEE DETAILS WORKING ON 'DSP' PROJECT.
+
+SQL>  select * from emp366
+  2   where empno IN ((select empno from assign366
+  3   where projectid = (select projectid from
+  4   project366 where pname = 'dsp')));
+
+     EMPNO ENAME           ECITY  JOB
+---------- --------------- ------ ----------
+     10001 varun           pune   manager
+     10002 kartik          delhi  clerk
+     10005 faiz            mumbai manager
+     10006 avinash         vizag  vp
+
+
+
+QUERY 3:- GIVE EMPLOYEE DETAILS WHO ARE ASSIGNED ON PROJECT ID 01.
+
+SQL> select * from emp366
+  2  where empno IN ( select empno from
+  3  assign366 where projectid = 100);
+
+     EMPNO ENAME           ECITY  JOB
+---------- --------------- ------ ----------
+     10001 varun           pune   manager
+     10003 shashank        blore  manager
+
+
+QUERY 4:- LIST EMPLOYEES WORKING ON MORE THAN ONE PROJECT.
+
+SQL> select ename from emp366
+  2  where empno IN
+  3  (select empno from assign366
+  4  GROUP BY empno having 
+  5  COUNT(projectid)>1);
+
+ENAME
+---------------
+varun
+kartik
+shashank
+faiz
+
+
+QUERY 5:- LIST THE EMPLOYEES WHO WORKS ON ATLEAST ONE OF THE PROJECTS THAT EMPLOYEE1
+	  WORKS ON.
+
+SQL> select ename from emp366
+  2  where empno IN
+  3  (select empno from assign366
+  4  where projectid IN
+  5  (select projectid from assign366
+  6  where empno = 10001));
+
+ENAME
+---------------
+varun
+kartik
+shashank
+faiz
+avinash
+

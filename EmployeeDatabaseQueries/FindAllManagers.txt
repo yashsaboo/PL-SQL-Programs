@@ -1,0 +1,25 @@
+/*Write PL/SQL code to find all the managers. Consider the schema Emp(Emp_no, Company, DOJ, Designation, Salary, Dep_no).*/
+
+/*Code*/
+Table created
+create table Emp2(Emp_no int primary key, Company varchar(50), DOJ date, Designation varchar(50), Salary int, Dep_no int);
+insert into Emp2 values ('101','Persistent', TO_DATE('1997-04-24','YYYY-MM-DD'),'Manager', '448000', '1');
+insert into Emp2 values (102,'Persistent',TO_DATE('1998-04-24','YYYY-MM-DD'),'software_Engineer',68000,1);
+insert into Emp2 values (103,'Persistent',TO_DATE('1999-04-24','YYYY-MM-DD'),'developer',108000,1);
+insert into Emp2 values (104,'Persistent',TO_DATE('2000-04-24','YYYY-MM-DD'),'Lab_attender',148000,1);
+insert into Emp2 values (105,'Persistent',TO_DATE('2001-04-24','YYYY-MM-DD'),'Manager',248000,1);
+insert into Emp2 values (106,'Persistent',TO_DATE('2002-04-24','YYYY-MM-DD'),'CEO',348000,1);
+
+declare
+manage varchar(50);
+employee_id int;
+begin
+select Emp_no,Designation into employee_id,manage from Emp2 where Designation ='Manager';
+dbms_output.put_line('Employee ID-:' || employee_id ||','||'Designation-:'||manage);
+end;
+
+/*
+Output:
+		Employee ID-:105,Designation:-Manager
+		Statement processed.
+*/

@@ -1,0 +1,19 @@
+/*Write and implement PL/SQL code to find length when area and width of a rectangle is given. 
+If width is zero, it should throw an exception (zero_divide).*/
+
+/*Code*/
+DECLARE
+    length NUMBER;
+    width NUMBER;
+    area NUMBER;
+BEGIN
+    area := :Area;
+    width := :Width;
+    length := area / width;
+    DBMS_OUTPUT.PUT_LINE('Area: ' || area);
+    DBMS_OUTPUT.PUT_LINE('Width: ' || width);
+    DBMS_OUTPUT.PUT_LINE('Length: ' || length);
+EXCEPTION
+    WHEN ZERO_DIVIDE THEN
+        DBMS_OUTPUT.PUT_LINE('Width cannot be 0');
+END;

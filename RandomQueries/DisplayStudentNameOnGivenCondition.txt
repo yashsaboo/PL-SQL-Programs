@@ -1,0 +1,22 @@
+/*Write and implement PL/SQL code to display first name and last name of student whose marks are greater than 100. 
+When multiple records are selected, it should throw an exception (TOO_MANY_ROWS).*/
+
+/*Code*/
+CREATE TABLE student (ID NUMBER PRIMARY KEY, firstname VARCHAR2(15), lastname VARCHAR2(15), marks NUMBER);
+
+INSERT INTO student VALUES (1, 'Rahul', 'Singh', 92);
+INSERT INTO student VALUES (2, 'Prakash', 'Pangtey', 100);
+INSERT INTO student VALUES (3, 'Parnika', 'Tandon', 110);
+INSERT INTO student VALUES (4, 'Nupur', 'Bhalla', 95);
+INSERT INTO student VALUES (5, 'Anupriya', 'Nigam', 102);
+DECLARE
+    fname VARCHAR2(15);
+    lname VARCHAR2(15);
+BEGIN
+    SELECT firstname, lastname INTO fname, lname FROM student WHERE marks > 100;
+    DBMS_OUTPUT.PUT_LINE('First Name: ' || fname);
+    DBMS_OUTPUT.PUT_LINE('Last Name: ' || lname);
+EXCEPTION
+    WHEN TOO_MANY_ROWS THEN
+        DBMS_OUTPUT.PUT_LINE('Multiple Records found');
+END;

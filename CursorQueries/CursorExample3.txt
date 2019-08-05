@@ -1,0 +1,26 @@
+SQL> declare
+  2  cursor employee1 is
+  3  select ename from emp
+  4  where deptno in(10,20);
+  5  vname emp.ename%type;
+  6  begin
+  7  open employee1;
+  8  loop
+  9  fetch employee1 into vname;
+ 10  exit when employee1%notfound;
+ 11  dbms_output.put_line('name is '||vname);
+ 12  end loop;
+ 13  close employee1;
+ 14  end;
+ 15  .
+SQL> /
+name is SMITH
+name is JONES
+name is CLARK
+name is SCOTT
+name is KING
+name is ADAMS
+name is FORD
+name is MILLER
+
+PL/SQL procedure successfully completed.

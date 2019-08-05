@@ -1,0 +1,26 @@
+/*Write and implement PL/SL cursor to increase salary of employees in department 17.*/
+
+/*Code*/
+declare
+cursor employee4 is
+select ename,sal from employee WHERE deptno = 17 for update;
+vname employee.ename%type; 
+sal employee.sal%type;
+begin
+open employee4;
+loop
+fetch employee4 into vname,sal;
+exit when employee4%notfound;
+dbms_output.put_line('Name is '||vname);
+dbms_output.put_line('Updated salary is '||sal);
+UPDATE employee SET sal= sal+10000 WHERE ename=vname;
+end loop;
+close employee4;
+end;
+
+/*
+Output:
+		Name is Adam
+		Updated salary is 20000
+		Statement processed.
+*/

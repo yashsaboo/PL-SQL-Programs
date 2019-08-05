@@ -1,0 +1,22 @@
+SQL> declare
+  2  cursor varun is
+  3  select ename from emp366 order by sal desc;
+  4  vname emp366.ename%type;
+  5  begin
+  6  open varun;
+  7  loop
+  8  fetch varun into vname;
+  9  exit when varun%rowcount=6;
+ 10  dbms_output.put_line('name is '||vname);
+ 11  end loop;
+ 12  close varun;
+ 13  end;
+ 14  .
+SQL> /
+name is KING
+name is FORD
+name is SCOTT
+name is JONES
+name is BLAKE
+
+PL/SQL procedure successfully completed.

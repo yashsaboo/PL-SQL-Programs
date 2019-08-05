@@ -1,0 +1,22 @@
+/*Write and implement PL/SL cursor to  count the number of employees from emp table.*/
+
+/*Code*/
+declare
+cursor employee3 is
+select count(*) as noe from employee;
+noe number(15);
+begin
+open employee3;
+loop
+fetch employee3 into noe;
+exit when employee3%notfound;
+dbms_output.put_line('Number of employees are '||noe);
+end loop;
+close employee3;
+end;
+
+/*
+Output:
+		Number of employees are 4
+		Statement processed.
+*/

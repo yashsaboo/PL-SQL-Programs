@@ -1,0 +1,19 @@
+/*Write and Implement PL/SQL code to find factorial of the number.*/
+
+/*Code*/
+Declare
+fact number :=15;
+n number := fact -1;
+Begin
+while n > 0 loop
+fact:=n*fact;
+n:=n-1;
+End loop;
+dbms_output.put_line(fact);
+End
+
+/*
+Output:
+		1307674368000
+		Statement processed.
+*/

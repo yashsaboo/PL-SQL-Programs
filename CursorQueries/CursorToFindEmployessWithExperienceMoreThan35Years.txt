@@ -1,0 +1,29 @@
+/*Write and implement PL/SL cursor to display details like employee name, their designation of those employees whose experience is more than 35 years.*/
+
+/*Code*/
+declare
+cursor employee2 is
+select ename,job,(months_between(sysdate, hiredate) /12) as exp from employee
+where (months_between(sysdate, hiredate) /12)>35;
+vname employee.ename%type;
+desg employee.job%type;
+exp number(15);
+begin
+open employee2;
+loop
+fetch employee2 into vname,desg,exp;
+exit when employee2%notfound;
+dbms_output.put_line('Name is '||vname);
+dbms_output.put_line('Designation is '||desg);
+dbms_output.put_line('Experience is '||exp);
+end loop;
+close employee2;
+end;
+
+/*
+Output:
+		Name is King
+		Designation is President
+		Experience is 37
+		Statement processed.
+*/

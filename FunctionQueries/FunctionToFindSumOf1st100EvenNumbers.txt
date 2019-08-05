@@ -1,0 +1,29 @@
+/*Write and implement PL/SQL procedure or function to find the sum of 1st 100 even numbers.*/
+
+/*Code*/
+CREATE OR REPLACE FUNCTION evensum
+return number
+IS
+result number:=0;
+a number;
+BEGIN
+FOR i IN 0..100 LOOP
+IF mod(i,2)=0 then
+result:=result+i;
+END IF;
+END LOOP;
+return result;
+END;
+
+DECLARE
+result number;
+BEGIN
+result:=evensum;
+DBMS_OUTPUT.PUT_LINE('THE SUM IS = '||result);
+END;
+
+/*
+Output:
+		THE SUM IS = 2550
+		Statement processed.
+*/

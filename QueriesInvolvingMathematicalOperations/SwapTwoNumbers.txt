@@ -1,0 +1,23 @@
+/*Write and Implement PL/SQL code to swap two numbers.*/
+
+/*Code*/
+DECLARE
+firstNumber number;
+secondNumber number;
+swap number;
+number1 number;
+number2 number;
+BEGIN
+firstNumber :=:number1;
+secondNumber :=:number2;
+swap := firstNumber;
+firstNumber := secondNumber;
+secondNumber := firstNumber;
+DBMS_OUTPUT.PUT_LINE('First No. ' || firstNumber || ' Second No.' || secondNumber);
+END;
+
+/*
+Output:
+		First No. 133 Second No.133
+		Statement processed.
+*/

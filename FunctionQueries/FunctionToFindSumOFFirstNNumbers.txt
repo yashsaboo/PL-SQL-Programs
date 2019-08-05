@@ -1,0 +1,32 @@
+/*Write and implement PL/SQL procedure or function to find sum of the first n numbers.*/
+
+/*Code*/
+CREATE OR REPLACE FUNCTION nsum366(num number)
+return number
+IS
+result number:=0;
+BEGIN
+DBMS_OUTPUT.PUT_LINE('THE SUM IS: ');
+FOR i IN 1..num LOOP
+result := result + i;
+END LOOP;
+DBMS_OUTPUT.PUT_LINE(result);
+return result;
+END;
+
+DECLARE
+result number;
+BEGIN
+result := nsum366(&num);
+end;
+
+/*
+Output:
+		Enter value for num: 7
+		old   4: result := nsum366(&num);
+		new   4: result := nsum366(7);
+		THE SUM IS:
+		28
+
+		PL/SQL procedure successfully completed.
+*/

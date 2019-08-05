@@ -1,0 +1,35 @@
+/*Write and implement PL/SQL code to raise the salary of a given employee (empid) by 10%. 
+If no data found it should throw exception (NO_Data_Found). 
+If the salary is null, it will raise_application_error(-20101, ‘Salary is missing’).*/
+
+/*Code*/
+CREATE TABLE employee (ID NUMBER PRIMARY KEY, name VARCHAR2(20), salary NUMBER);
+
+INSERT INTO employee VALUES (1, Nupur Bhalla, 50000);
+INSERT INTO employee VALUES (2, 'Amitej Singh', NULL);
+INSERT INTO employee VALUES (3, 'Aditya Srivastava', 30000);
+
+DECLARE
+    newSalary NUMBER;
+    oldSalary NUMBER;
+    empID NUMBER;
+BEGIN
+    empID := :EmployeeID;
+    SELECT salary INTO oldSalary FROM employee WHERE id=empID;
+    IF oldSalary IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20101, 'Salary is missing');
+    ELSE
+        newSalary := oldSalary * 1.10;
+        DBMS_OUTPUT.PUT_LINE('Old Salary: ' || oldSalary);
+        DBMS_OUTPUT.PUT_LINE('New Salary: ' || newSalary);
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No data found');
+END;
+
+/*
+Output:
+        Old Salary: 29000
+        New Salary: 31900
+*/

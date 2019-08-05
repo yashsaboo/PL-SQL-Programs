@@ -1,0 +1,25 @@
+/*Write and implement PL/SL cursor to display details like employee name, their designation and salary of those employee whose salary is greater than 20000 from employee table.*/
+
+/*Code*/
+declare
+cursor employee1 is
+select ename,job from employee
+where sal>2000;
+vname employee.ename%type;
+desg employee.job%type;
+begin
+open employee1;
+loop
+fetch employee1 into vname,desg;
+exit when employee1%notfound;
+dbms_output.put_line('Name is '||vname);
+dbms_output.put_line('Designation is '||desg);
+end loop;
+close employee1;
+end;
+
+/*
+Output:
+		Name is King
+		Designation is President
+*/

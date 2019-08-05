@@ -1,0 +1,48 @@
+/*Write and implement PL/SQL procedure or function to check if given number is even or odd.*/
+
+/*Code*/
+CREATE OR REPLACE FUNCTION evenodd(num number)
+return number
+IS
+result number;
+BEGIN
+IF mod(num,2)=0 then
+result:=1;
+ELSE
+result:=2;
+END IF;
+return result;
+end;
+
+DECLARE
+result number;
+BEGIN
+result:=evenodd(&num);
+IF result=1 then
+DBMS_OUTPUT.PUT_LINE('THE NUMBER IS EVEN!');
+ELSE
+DBMS_OUTPUT.PUT_LINE('THE NUMBER IS ODD!');
+END IF;
+DBMS_OUTPUT.PUT_LINE('DONE!');
+END;
+
+/*
+Output:
+		SQL> /
+		Enter value for num: 7
+		old   4: result:=evenodd(&num);
+		new   4: result:=evenodd(7);
+		THE NUMBER IS ODD!
+		DONE!
+
+		PL/SQL procedure successfully completed.
+
+		SQL> /
+		Enter value for num: 16
+		old   4: result:=evenodd(&num);
+		new   4: result:=evenodd(16);
+		THE NUMBER IS EVEN!
+		DONE!
+
+		PL/SQL procedure successfully completed.
+*/
